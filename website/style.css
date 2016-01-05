@@ -1,10 +1,41 @@
 body {
+  color: white;
+  background-color: black;
   font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
 }
+
 p {
   padding-bottom: 10px;
   font-size: 12pt;
 }
-p.mouse_type {
+
+#mouse_type {
   font-size: 9pt;
+}
+
+#left_arrow {
+  float: left;
+}
+#right_arrow {
+  float: right;
+}
+
+div.page_nav {
+  height: 70vh;
+  padding: 0.5em;
+  font-size: 48pt;
+  font-weight: bold;
+  line-height: 70vh;
+  vertical-align: middle;
+  text-shadow: 3px 3px black;
+}
+
+#photo_image {
+  float: center;
+  min-width: 100px;
+  height: 80vh;
+  background-size: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
 }

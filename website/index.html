@@ -8,13 +8,17 @@
   </head>
   <body>
 
-    <h2>Photo Lightbox</h2>
-    <p>Photo and title will display here.</p>
-    <p class="mouse_type"><b>Time:</b> <span id="time_span"></span></p>
+<h1 id="image_title" class="caption"></h1>
+<div style="overflow: auto;">
+  <div id="left_arrow"  style="visibility: hidden;" class="page_nav" onclick='show_page(-1);'>&#9664;</div>
+  <div id="right_arrow" style="visibility: hidden;" class="page_nav" onclick='show_page(1);'>&#9654;</div>
+  <div id="photo_image"></div>
+</div>
+<p id="mouse_type">&copy; Copyright John Woodell 2016. All rights reserved.<p>
 
   <script>
   (function() {
-  show_time();
+  request_photos();
   })();
   </script>
   </body>
