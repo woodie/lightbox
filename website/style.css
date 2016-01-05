@@ -21,7 +21,13 @@ p {
   float: right;
 }
 
+div.page_nav:hover {
+  opacity: 1.0;
+}
+
 div.page_nav {
+  opacity: 0.5;
+  cursor: pointer;
   height: 70vh;
   padding: 0.5em;
   font-size: 48pt;
