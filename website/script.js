@@ -1,4 +1,4 @@
-var flickr_user_id = '46910958@N02'
+var flickr_user_id = '46910958@N02';
 var flickr_api_key = '10e3bd8029bd2e9ef8b1447352535c67';
 var flickr_method  = 'flickr.people.getPublicPhotos';
 var photo_data = []; // from flickr API
@@ -32,10 +32,8 @@ function show_page(offset) {
   var index = page_index + offset;
   page_index = index;
   photo = photo_data[index];
-  var img_url = "https://farm" + photo['farm'] +
-      ".staticflickr.com/" + photo['server'] +
-      "/" + photo['id'] + "_" + photo['secret'] +
-      "_" + size + ".jpg"
+  var img_url = "https://farm" + photo['farm'] + ".staticflickr.com/" +
+      photo['server'] + "/" + photo['id'] + "_" + photo['secret'] + "_" + size + ".jpg";
   document.getElementById('photo_image').style.backgroundImage = "url('" + img_url + "')";
   document.getElementById('image_title').innerHTML = photo['title'];
   document.getElementById('left_arrow').style.visibility = (index === 0) ? "hidden" : "visible";
