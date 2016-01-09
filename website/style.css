@@ -5,9 +5,8 @@ body {
   text-align: center;
 }
 
-p {
-  padding-bottom: 10px;
-  font-size: 12pt;
+#photo_title {
+  font-size: 36pt;
 }
 
 #copyright {
@@ -19,6 +18,26 @@ p {
 }
 #right_arrow {
   float: right;
+}
+
+.thumbnail {
+  opacity: 0.5;
+  margin-left: 6px;
+  margin-right: 6px;
+  border: 2px solid gray;
+}
+
+.thumbnail:hover {
+  opacity: 1.0;
+}
+
+.selected {
+  opacity: 1.0;
+  border: 2px solid white;
+}
+
+div.photo_nav {
+  height: 80px;
 }
 
 div.page_nav:hover {
@@ -40,8 +59,8 @@ div.page_nav {
 #photo_image {
   float: center;
   min-width: 100px;
-  height: 80vh;
-  background-size: 100vh;
+  height: 75vh;
+  background-size: 110vh;
   background-position: center;
   background-repeat: no-repeat;
 }
