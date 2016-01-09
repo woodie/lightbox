@@ -40,8 +40,8 @@ function build_thumbs() {
   document.getElementById('thumbnails').innerHTML = nav_html;
 }
 
-function nav_btn(next) {
-  render_view(page_index + (next ? 1 : -1));
+function nav_btn(offset) {
+  render_view(page_index + offset);
 }
 
 function render_view(page) {
