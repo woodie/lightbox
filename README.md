@@ -2,24 +2,18 @@
 
 Display photos from flickr API.
 
-## Test envisonment setup
-```bash
+### Test environment setup
 npm install mocha
 npm install chai
 npm install mocha-jsdom
 npm install jsdom
-```
 
-## Run tests
-```bash
+### Run tests
 mocha
-```
 
-## Dev envisonment setup
+### Dev environment setup
 Install Appengine (for Python)
 https://cloud.google.com/appengine/docs/python/release-notes
 
-## Run server
-```bash
+### Run server
 dev_appserver.py .
-```
