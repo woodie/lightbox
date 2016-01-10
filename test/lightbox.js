@@ -65,12 +65,9 @@ describe('Lightbox App', function () {
       body.appendChild(title);
       body.appendChild(back);
       body.appendChild(next);
-      var data = [{'id': 33, 'secret': 'foo', 'title': 'thirty three',
-                   'farm': 'FARM', 'server': 'SERVER'},
-                  {'id': 66, 'secret': 'bar', 'title': 'sixty six',
-                   'farm': 'FARM', 'server': 'SERVER'},
-                  {'id': 99, 'secret': 'baz', 'title': 'ninety nine',
-                   'farm': 'FARM', 'server': 'SERVER'}];
+      var data = [{'id': 33, 'secret': 'foo', 'title': 'thirty three'},
+                  {'id': 66, 'secret': 'bar', 'title': 'sixty six'},
+                  {'id': 99, 'secret': 'baz', 'title': 'ninety nine'}];
       lightbox.render_view(data, 0);
       expect(image.style.backgroundImage).to.include('33_foo_b.jpg');
       expect(title.innerHTML).to.equal('thirty three');
