@@ -1,8 +1,29 @@
 var photo_data = []; // from flickr API
 var page_index = 0;  // selected photo
 
-function request_photos() {
-  // We could also show error_mode on timeout
+var nav_arrow = function (offset) {
+  page_index = page_index + offset;
+  render_view(photo_data, page_index);
+};
+
+var nav_thumb = function (page) {
+  page_index = page;
+  render_view(photo_data, page_index);
+};
+
+var load_photos = function (api_data) {
+  try {
+    photo_data = api_data['photos']['photo'];
+    build_thumbs(photo_data);
+    render_view(photo_data, 0);
+  } catch (e) {
+    console.log(e);
+    error_mode('Oops, please try back later.');
+  }
+};
+
+// We could also show error_mode on timeout
+var request_photos = function () {
   var args = {'jsoncallback': 'load_photos',
       'format': 'json',
       'method': 'flickr.people.getPublicPhotos',
@@ -12,53 +33,48 @@ function request_photos() {
   script.src = 'https://api.flickr.com/services/rest/?' +
       Object.keys(args).map(function (k) {return `${k}=${args[k]}`}).join('&');
   document.getElementsByTagName('head')[0].appendChild(script);
-}
+};
 
-function load_photos(api_data) {
-  try {
-    photo_data = api_data['photos']['photo'];
-    build_thumbs();
-    render_view(0);
-  } catch (e) {
-    console.log(e);
-    error_mode('Oops, please try back later.');
-  }
-}
-
-function img_url(photo, size) {
+var img_url = function (photo, size) {
   var size = size || 'b'; // [mstzb]
   return "https://farm" + photo['farm'] + ".staticflickr.com/" + photo['server'] +
       "/" + photo['id'] + "_" + photo['secret'] + "_" + size + ".jpg";
-}
+};
 
-function build_thumbs() {
-  var nav_html = '';
-  for (var t = 0; t < photo_data.length; t++) {
-    nav_html += `<img id='thumb_${t}' class='thumbnail ${t === 0 ? "selected" : ''}' ` +
-        `onclick='render_view(${t})' src="${img_url(photo_data[t], 't')}">`;
+var build_thumbs = function (data) {
+  html = '';
+  for (var t = 0; t < data.length; t++) {
+    html += `<img id='thumb_${t}' class='thumbnail${t === 0 ? " selected" : ""}' ` +
+        `onclick='nav_thumb(${t})' src="${img_url(data[t], 't')}">`;
   }
-  document.getElementById('thumbnails').innerHTML = nav_html;
-}
+  document.getElementById('thumbnails').innerHTML = html;
+};
 
-function nav_btn(offset) {
-  render_view(page_index + offset);
-}
-
-function render_view(page) {
-  page_index = page;
-  document.getElementById('photo_image').style.backgroundImage = "url('" + img_url(photo_data[page]) + "')";
-  document.getElementById('photo_title').innerHTML = photo_data[page]['title'];
-  document.getElementById('left_arrow').style.visibility = (page === 0) ? "hidden" : "visible";
-  document.getElementById('right_arrow').style.visibility = (page < photo_data.length - 1) ? "visible" : "hidden";
-  var thumbs = document.getElementsByClassName("thumbnail");
+var render_view = function (photos, index) {
+  document.getElementById('photo_image').style.backgroundImage = "url('" + img_url(photos[index]) + "')";
+  document.getElementById('photo_title').innerHTML = photos[index]['title'];
+  document.getElementById('left_arrow').style.visibility = (index === 0) ? "hidden" : "visible";
+  document.getElementById('right_arrow').style.visibility = (index < photos.length - 1) ? "visible" : "hidden";
+  var thumbs = document.getElementById("thumbnails").children;
   for (var i = 0; i < thumbs.length; i++) {
-    thumbs[i].className = (thumbs[i].id === "thumb_" + page) ? 'thumbnail selected' : 'thumbnail';
+    thumbs[i].className = (thumbs[i].id === "thumb_" + index) ? 'thumbnail selected' : 'thumbnail';
   }
-}
+};
 
-function error_mode(message) {
+var error_mode = function (message) {
   var img_url = 'https://gretchenrubin.com/wp-content/uploads/2013/02/broken-window.jpg';
   document.getElementById('photo_image').style.backgroundImage = "url('" + img_url + "')";
   document.getElementById('photo_title').innerHTML = message;
   document.getElementById('copyright').style.visibility = "hidden";
+};
+
+// support testing with mocha
+if (typeof window === 'undefined') {
+  module.exports = {
+      request_photos: request_photos,
+      img_url: img_url,
+      build_thumbs: build_thumbs,
+      render_view: render_view,
+      error_mode: error_mode
+  };
 }
