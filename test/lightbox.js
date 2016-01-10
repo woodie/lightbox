@@ -6,7 +6,7 @@ var lightbox = require('../website/script');
 describe('Lightbox App', function () {
 
   describe('request_photos()', function () {
-    jsdom("<html><head></head></html>");
+    jsdom();
     it('should setup JSONP request', function () {
       lightbox.request_photos();
       var script = document.getElementsByTagName('script')[0];
@@ -30,7 +30,7 @@ describe('Lightbox App', function () {
   });
 
   describe('build_thumbs()', function () {
-    jsdom("<html><body></body></html>");
+    jsdom();
     it('should populate thumbnails', function () {
       var body = document.getElementsByTagName('body')[0];
       var thumbs = document.createElement('div');
@@ -47,7 +47,7 @@ describe('Lightbox App', function () {
   });
 
   describe('render_view()', function () {
-    jsdom("<html><body></body></html>");
+    jsdom();
     it('has first/middle/last behavior', function () {
       var thumb = document.createElement('div');
       thumb.id = 'thumbnails';
@@ -87,7 +87,7 @@ describe('Lightbox App', function () {
   });
 
   describe('error_mode()', function () {
-    jsdom("<html><body></body></html>");
+    jsdom();
     it('should render error view', function () {
       var image = document.createElement('div');
       image.id = 'photo_image';
