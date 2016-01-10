@@ -16,13 +16,12 @@ describe('Lightbox App', function () {
   });
 
   describe('img_url()', function () {
+    var photo = {'farm': 'FARM', 'server': 'SERVER', 'id': 'ID', 'secret': 'SECRET'};
     it('should return image url', function () {
-      var photo = {'farm': 'FARM', 'server': 'SERVER', 'id': 'ID', 'secret': 'SECRET'};
       var url = lightbox.img_url(photo);
       expect(url).to.equal('https://farmFARM.staticflickr.com/SERVER/ID_SECRET_b.jpg');
     });
     it('should return sized url', function () {
-      var photo = {'farm': 'FARM', 'server': 'SERVER', 'id': 'ID', 'secret': 'SECRET'};
       var size = 'Z';
       var url = lightbox.img_url(photo, size);
       expect(url).to.equal('https://farmFARM.staticflickr.com/SERVER/ID_SECRET_' + size + '.jpg');
@@ -32,17 +31,17 @@ describe('Lightbox App', function () {
   describe('build_thumbs()', function () {
     jsdom();
     it('should populate thumbnails', function () {
+      var thumb = document.createElement('div');
+      thumb.id = 'thumbnails';
       var body = document.getElementsByTagName('body')[0];
-      var thumbs = document.createElement('div');
-      thumbs.id = 'thumbnails';
-      body.appendChild(thumbs);
+      body.appendChild(thumb);
       var data = [{'id': 33, 'secret': 'foo'}, {'id': 66, 'secret': 'bar'}];
       lightbox.build_thumbs(data);
-      var thumbs = document.getElementById('thumbnails').children;
-      expect(thumbs[0].className).to.equal('thumbnail selected');
-      expect(thumbs[0].src).to.include('33_foo_t.jpg');
-      expect(thumbs[1].className).to.equal('thumbnail');
-      expect(thumbs[1].src).to.include('66_bar_t.jpg');
+      var imgs = thumb.children;
+      expect(imgs[0].className).to.equal('thumbnail selected');
+      expect(imgs[0].src).to.include('33_foo_t.jpg');
+      expect(imgs[1].className).to.equal('thumbnail');
+      expect(imgs[1].src).to.include('66_bar_t.jpg');
     });
   });
 
