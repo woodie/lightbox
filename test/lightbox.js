@@ -13,15 +13,36 @@ describe('Lightbox App', function () {
   });
 
   describe('nav_arrow()', function () {
-    it('should increment page_index', function () {
+    it('should go to the next page', function () {
       lightbox.app_state.photo_data = null; // stifle render
+      lightbox.app_state.page_index = 3;
       lightbox.nav_arrow(1);
-      expect(lightbox.app_state.page_index).to.equal(1);
+      expect(lightbox.app_state.page_index).to.equal(4);
+    });
+    it('should go to the previous page', function () {
+      lightbox.app_state.photo_data = null; // stifle render
+      lightbox.app_state.page_index = 3;
+      lightbox.nav_arrow(-1);
+      expect(lightbox.app_state.page_index).to.equal(2);
+    });
+    it('should cycle around the front', function () {
+      lightbox.app_state.photo_data = null; // stifle render
+      lightbox.app_state.alt_length = 9;
+      lightbox.app_state.page_index = 0;
+      lightbox.nav_arrow(-1);
+      expect(lightbox.app_state.page_index).to.equal(9);
+    });
+    it('should cycle around the back', function () {
+      lightbox.app_state.photo_data = null; // stifle render
+      lightbox.app_state.alt_length = 9;
+      lightbox.app_state.page_index = 9;
+      lightbox.nav_arrow(1);
+      expect(lightbox.app_state.page_index).to.equal(0);
     });
   });
 
   describe('nav_thumb()', function () {
-    it('should increment page_index', function () {
+    it('should seek to a specific page', function () {
       lightbox.app_state.photo_data = null; // stifle render
       lightbox.nav_thumb(1);
       expect(lightbox.app_state.page_index).to.equal(1);
