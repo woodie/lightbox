@@ -5,6 +5,29 @@ var lightbox = require('../website/script');
 
 describe('Lightbox App', function () {
 
+  describe('app_state', function () {
+    it('should have initial values', function () {
+      expect(lightbox.app_state.page_index).to.equal(0);
+      expect(lightbox.app_state.photo_data).to.include.members([]);
+    });
+  });
+
+  describe('nav_arrow()', function () {
+    it('should increment page_index', function () {
+      lightbox.app_state.photo_data = null; // stifle render
+      lightbox.nav_arrow(1);
+      expect(lightbox.app_state.page_index).to.equal(1);
+    });
+  });
+
+  describe('nav_thumb()', function () {
+    it('should increment page_index', function () {
+      lightbox.app_state.photo_data = null; // stifle render
+      lightbox.nav_thumb(1);
+      expect(lightbox.app_state.page_index).to.equal(1);
+    });
+  });
+
   describe('request_photos()', function () {
     jsdom();
     it('should setup JSONP request', function () {

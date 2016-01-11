@@ -1,21 +1,23 @@
-var photo_data = []; // from flickr API
-var page_index = 0;  // selected photo
+var app_state = {
+  page_index: 0,
+  photo_data: []
+};
 
 var nav_arrow = function (offset) {
-  page_index = page_index + offset;
-  render_view(photo_data, page_index);
+  app_state.page_index = app_state.page_index + offset;
+  render_view(app_state.photo_data, app_state.page_index);
 };
 
 var nav_thumb = function (page) {
-  page_index = page;
-  render_view(photo_data, page_index);
+  app_state.page_index = page;
+  render_view(app_state.photo_data, app_state.page_index);
 };
 
 var load_photos = function (api_data) {
   try {
-    photo_data = api_data['photos']['photo'];
-    build_thumbs(photo_data);
-    render_view(photo_data, 0);
+    app_state.photo_data = api_data['photos']['photo'];
+    build_thumbs(app_state.photo_data);
+    render_view(app_state.photo_data, 0);
   } catch (e) {
     console.log(e);
     error_mode('Oops, please try back later.');
@@ -51,6 +53,12 @@ var build_thumbs = function (data) {
 };
 
 var render_view = function (photos, index) {
+  if (photos === null) {
+    return;
+  } else if (photos.length === 0) {
+    error_mode('Sorry, no photos in this album.');
+    return;
+  };
   document.getElementById('photo_image').style.backgroundImage = "url('" + img_url(photos[index]) + "')";
   document.getElementById('photo_title').innerHTML = photos[index]['title'];
   document.getElementById('left_arrow').style.visibility = (index === 0) ? "hidden" : "visible";
@@ -69,8 +77,12 @@ var error_mode = function (message) {
 };
 
 // support testing with mocha
-if (typeof window === 'undefined') {
+if (typeof module !== 'undefined') {
   module.exports = {
+      app_state: app_state,
+      nav_arrow: nav_arrow,
+      nav_thumb: nav_thumb,
+      load_photos: load_photos,
       request_photos: request_photos,
       img_url: img_url,
       build_thumbs: build_thumbs,
