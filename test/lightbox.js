@@ -7,14 +7,12 @@ var expect   = require('chai').expect;
 var lightbox = require('../website/script');
 
 var set_divs = function (doc, keys) {
-  if (typeof document !== 'undefined') {
-    var body = doc.getElementsByTagName('body')[0];
-    var divs = {};
-    for (let key of keys) {
-      divs[key] = document.createElement('div');
-      divs[key].id = key;
-      body.appendChild(divs[key]);
-    }
+  var body = doc.getElementsByTagName('body')[0];
+  var divs = {};
+  for (let key of keys) {
+    divs[key] = document.createElement('div');
+    divs[key].id = key;
+    body.appendChild(divs[key]);
   }
   return divs;
 };
