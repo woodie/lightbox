@@ -6,6 +6,19 @@ var jsdom    = require('mocha-jsdom');
 var expect   = require('chai').expect;
 var lightbox = require('../website/script');
 
+var set_divs = function (doc, keys) {
+  if (typeof document !== 'undefined') {
+    var body = doc.getElementsByTagName('body')[0];
+    var divs = {};
+    for (let key of keys) {
+      divs[key] = document.createElement('div');
+      divs[key].id = key;
+      body.appendChild(divs[key]);
+    }
+  }
+  return divs;
+};
+
 describe('Lightbox App', function () {
 
   describe('app_state', function () {
@@ -78,13 +91,10 @@ describe('Lightbox App', function () {
   describe('build_thumbs()', function () {
     jsdom();
     it('should populate thumbnails', function () {
-      var thumb = document.createElement('div');
-      thumb.id = 'thumbnails';
-      var body = document.getElementsByTagName('body')[0];
-      body.appendChild(thumb);
+      var divs = set_divs(document, ['thumbnails'])
       var data = [{'id': 33, 'secret': 'foo'}, {'id': 66, 'secret': 'bar'}];
       lightbox.build_thumbs(data);
-      var imgs = thumb.children;
+      var imgs = divs['thumbnails'].children;
       expect(imgs[0].className).to.equal('thumbnail selected');
       expect(imgs[0].src).to.include('33_foo_t.jpg');
       expect(imgs[1].className).to.equal('thumbnail');
@@ -95,14 +105,8 @@ describe('Lightbox App', function () {
   describe('render_view()', function () {
     jsdom();
     it('has first/middle/last behavior', function () {
-      var body = document.getElementsByTagName('body')[0];
       var keys = 'thumbnails photo_image photo_title left_arrow right_arrow'.split(' ')
-      var divs = {};
-      for (let key of keys) {
-        divs[key] = document.createElement('div');
-        divs[key].id = key;
-        body.appendChild(divs[key]);
-      }
+      var divs = set_divs(document, keys)
       var data = [{'id': 33, 'secret': 'foo', 'title': 'thirty three'},
                   {'id': 66, 'secret': 'bar', 'title': 'sixty six'},
                   {'id': 99, 'secret': 'baz', 'title': 'ninety nine'}];
@@ -127,14 +131,8 @@ describe('Lightbox App', function () {
   describe('error_mode()', function () {
     jsdom();
     it('should render error view', function () {
-      var body = document.getElementsByTagName('body')[0];
       var keys = 'photo_image photo_title copyright'.split(' ')
-      var divs = {};
-      for (let key of keys) {
-        divs[key] = document.createElement('div');
-        divs[key].id = key;
-        body.appendChild(divs[key]);
-      }
+      var divs = set_divs(document, keys)
       var message = 'Oops, something is broken here!';
       lightbox.error_mode(message);
       expect(divs['photo_image'].style.backgroundImage).to.include('broken-window.jpg');
