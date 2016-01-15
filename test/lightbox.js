@@ -1,4 +1,7 @@
 // file: test-lightbox.js
+
+"use strict";
+
 var jsdom    = require('mocha-jsdom');
 var expect   = require('chai').expect;
 var lightbox = require('../website/script');
@@ -92,61 +95,51 @@ describe('Lightbox App', function () {
   describe('render_view()', function () {
     jsdom();
     it('has first/middle/last behavior', function () {
-      var thumb = document.createElement('div');
-      thumb.id = 'thumbnails';
-      var image = document.createElement('div');
-      image.id = 'photo_image';
-      var title = document.createElement('div');
-      title.id = 'photo_title';
-      var back = document.createElement('div');
-      back.id = 'left_arrow'
-      var next = document.createElement('div');
-      next.id = 'right_arrow'
       var body = document.getElementsByTagName('body')[0];
-      body.appendChild(thumb);
-      body.appendChild(image);
-      body.appendChild(title);
-      body.appendChild(back);
-      body.appendChild(next);
+      var keys = 'thumbnails photo_image photo_title left_arrow right_arrow'.split(' ')
+      var divs = {};
+      for (let key of keys) {
+        divs[key] = document.createElement('div');
+        divs[key].id = key;
+        body.appendChild(divs[key]);
+      }
       var data = [{'id': 33, 'secret': 'foo', 'title': 'thirty three'},
                   {'id': 66, 'secret': 'bar', 'title': 'sixty six'},
                   {'id': 99, 'secret': 'baz', 'title': 'ninety nine'}];
       lightbox.render_view(data, 0);
-      expect(image.style.backgroundImage).to.include('33_foo_b.jpg');
-      expect(title.innerHTML).to.equal('thirty three');
-      expect(back.style.visibility).to.equal('hidden');
-      expect(next.style.visibility).to.equal('visible');
+      expect(divs['photo_image'].style.backgroundImage).to.include('33_foo_b.jpg');
+      expect(divs['photo_title'].innerHTML).to.equal('thirty three');
+      expect(divs['left_arrow'].style.visibility).to.equal('hidden');
+      expect(divs['right_arrow'].style.visibility).to.equal('visible');
       lightbox.render_view(data, 1);
-      expect(image.style.backgroundImage).to.include('66_bar_b.jpg');
-      expect(title.innerHTML).to.equal('sixty six');
-      expect(back.style.visibility).to.equal('visible');
-      expect(next.style.visibility).to.equal('visible');
+      expect(divs['photo_image'].style.backgroundImage).to.include('66_bar_b.jpg');
+      expect(divs['photo_title'].innerHTML).to.equal('sixty six');
+      expect(divs['left_arrow'].style.visibility).to.equal('visible');
+      expect(divs['right_arrow'].style.visibility).to.equal('visible');
       lightbox.render_view(data, 2);
-      expect(image.style.backgroundImage).to.include('99_baz_b.jpg');
-      expect(title.innerHTML).to.equal('ninety nine');
-      expect(back.style.visibility).to.equal('visible');
-      expect(next.style.visibility).to.equal('hidden');
+      expect(divs['photo_image'].style.backgroundImage).to.include('99_baz_b.jpg');
+      expect(divs['photo_title'].innerHTML).to.equal('ninety nine');
+      expect(divs['left_arrow'].style.visibility).to.equal('visible');
+      expect(divs['right_arrow'].style.visibility).to.equal('hidden');
     });
   });
 
   describe('error_mode()', function () {
     jsdom();
     it('should render error view', function () {
-      var image = document.createElement('div');
-      image.id = 'photo_image';
-      var title = document.createElement('div');
-      title.id = 'photo_title';
-      var right = document.createElement('div');
-      right.id = 'copyright'
       var body = document.getElementsByTagName('body')[0];
-      body.appendChild(image);
-      body.appendChild(title);
-      body.appendChild(right);
+      var keys = 'photo_image photo_title copyright'.split(' ')
+      var divs = {};
+      for (let key of keys) {
+        divs[key] = document.createElement('div');
+        divs[key].id = key;
+        body.appendChild(divs[key]);
+      }
       var message = 'Oops, something is broken here!';
       lightbox.error_mode(message);
-      expect(image.style.backgroundImage).to.include('broken-window.jpg');
-      expect(title.innerHTML).to.equal(message);
-      expect(right.style.visibility).to.equal('hidden');
+      expect(divs['photo_image'].style.backgroundImage).to.include('broken-window.jpg');
+      expect(divs['photo_title'].innerHTML).to.equal(message);
+      expect(divs['copyright'].style.visibility).to.equal('hidden');
     });
   });
 
