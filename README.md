@@ -9,8 +9,10 @@ npm install mocha chai mocha-jsdom jsdom
 mocha
 
 ### Dev environment setup
-Install Appengine (for Python):
-https://cloud.google.com/appengine/docs/python/release-notes
+Install Appengine for Python
 
 ### Run dev server
 dev_appserver.py .
+
+### Deploy App Engine
+gcloud app deploy

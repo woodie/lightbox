@@ -1,11 +1,11 @@
 var app_state = {
-  alt_length: 6,
+  alt_length: 4,
   page_index: 0,
   photo_data: []
 };
 
 var nav_arrow = function (offset) {
-  var max = (app_state.photo_data) ? app_state.photo_data.length -1 : app_state.alt_length;
+  var max = app_state.alt_length;
   if (offset === 1 && app_state.page_index === max) {
     app_state.page_index = 0;
   } else if (offset === -1 && app_state.page_index === 0) {
@@ -23,7 +23,7 @@ var nav_thumb = function (page) {
 
 var load_photos = function (api_data) {
   try {
-    app_state.photo_data = api_data['photos']['photo'];
+    app_state.photo_data = api_data['photos']['photo'].slice(0, app_state.alt_length);
     build_thumbs(app_state.photo_data);
     render_view(app_state.photo_data, 0);
   } catch (e) {
@@ -86,12 +86,13 @@ var error_mode = function (message) {
 
 var attach_listeners = function () {
   document.addEventListener('keydown', function (e) {
-    if (e['keyIdentifier'] == 'U+0020') {
+    var code = e.keyCode ? e.keyCode : e.which;
+    if (code == 32) {
       nav_thumb(0); // reset on spacebar
-    } else if (e['keyIdentifier'] == 'Left') {
-      nav_arrow(-1);
-    } else if (e['keyIdentifier'] == 'Right') {
-      nav_arrow(1);
+    } else if (code == 37) {
+      nav_arrow(-1); // left
+    } else if (code == 39) {
+      nav_arrow(1); // right
     }
   });
 };
